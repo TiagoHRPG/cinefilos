@@ -6,6 +6,30 @@ Given("the user joins the page {string}", (page: string) => {
     cy.get(`[data-cy="full_name"]`).should('be.visible');
 });
 
+Given("the user enters the page {string}", (page: string) => {
+    cy.visit(page);
+    cy.url().should('include', page);
+    cy.get('form').should('be.visible');
+});
+
+Given("the user is logged in with email {string} and password {string}", (email: string, password: string) => {
+    cy.request({
+        method: 'POST',
+        url: 'http://127.0.0.1:8000/users/login', // Correct URL based on the working cURL command
+        body: { email, password },
+        failOnStatusCode: false // Prevent failure on non-2xx responses
+    }).then((response) => {
+        if (response.status !== 200) {
+            cy.log(`Unexpected response status: ${response.status}`);
+            cy.log(`Response body: ${JSON.stringify(response.body)}`);
+            throw new Error('Login failed with status code ' + response.status);
+        }
+        expect(response.status).to.eq(200);
+    });
+});
+
+
+
 When("the user does not visualize content registered with username {string} and phone number {string}", (username: string, phoneNumber: string) => {
     cy.get(`[data-cy="user-username-${username}"]`).should("not.exist");
     cy.get(`[data-cy="user-phoneNumber-${phoneNumber}"]`).should("not.exist");
@@ -27,3 +51,4 @@ When("the user leaves the data {string} empty", (field: string) => {
 Then("the user sees the text {string}", (text: string) => {
     cy.contains(text).should('be.visible');
 });
+

@@ -72,4 +72,13 @@ Scenario: Phone Number Unavailable
     When the user press "Cadastrar"
     Then the user visualizes the text "Dados de cadastro já existem."
 
+Scenario: Password Update Mismatch
+    Given the user enters the page "/user/reset_password/Carlos33"
+    And the user is logged in with email "jcso@gmail.com" and password "Clebson123"
+    When the user fills the data "current_password" with "Clebson123"
+    And the user fills the data "new_password" with "Bjkhc986"
+    And the user fills the data "repeat_password" with "Bjkhc9865"
+    And the user selects "Alterar Senha"
+    Then the user sees the text "As senhas não coincidem."
+
 
