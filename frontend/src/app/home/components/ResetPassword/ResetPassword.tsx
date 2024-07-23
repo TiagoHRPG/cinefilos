@@ -28,16 +28,26 @@ const ResetPasswordForm = () => {
     setErrorMessage('');
     setSuccessMessage('');
 
+    const passwordPolicy = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!passwordPolicy.test(passwords.new_password)) {
+      setErrorMessage("A senha deve ter pelo menos 8 caracteres, incluindo letras e números.");
+      setIsSubmitting(false);
+      return;
+    }
+
     if (passwords.new_password !== passwords.repeat_password) {
       setErrorMessage("As senhas não coincidem.");
       setIsSubmitting(false);
       return;
     }
+
     if (!userId) {
       setErrorMessage("User ID is undefined");
       setIsSubmitting(false);
       return;
     }
+
     try {
       // Fetch the current user data
       const currentUser = await getUser(userId);
@@ -51,7 +61,7 @@ const ResetPasswordForm = () => {
   
       // Update the password field within the data object
       currentUser.data.password = passwords.new_password;
-      console.log(currentUser.data.password)
+      console.log(currentUser.data.password);
   
       // Send the entire user object in the request
       const response = await updateUser(userId, currentUser.data);

@@ -81,4 +81,12 @@ Scenario: Password Update Mismatch
     And the user selects "Alterar Senha"
     Then the user sees the text "As senhas não coincidem."
 
+Scenario: Password Update Requirements Not Met
+    Given the user enters the page "/user/reset_password/Carlos33"
+    And the user is logged in with email "jcso@gmail.com" and password "Clebson123"
+    When the user fills the data "current_password" with "Clebson123"
+    And the user fills the data "new_password" with "abc"
+    And the user fills the data "repeat_password" with "abc"
+    And the user selects "Alterar Senha"
+    Then the user sees the text "A senha deve ter pelo menos 8 caracteres, incluindo letras e números."
 
