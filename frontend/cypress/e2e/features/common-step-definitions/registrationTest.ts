@@ -15,9 +15,9 @@ Given("the user enters the page {string}", (page: string) => {
 Given("the user is logged in with email {string} and password {string}", (email: string, password: string) => {
     cy.request({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/users/login', // Correct URL based on the working cURL command
+        url: 'http://127.0.0.1:8000/users/login', 
         body: { email, password },
-        failOnStatusCode: false // Prevent failure on non-2xx responses
+        failOnStatusCode: false
     }).then((response) => {
         if (response.status !== 200) {
             cy.log(`Unexpected response status: ${response.status}`);
@@ -27,8 +27,6 @@ Given("the user is logged in with email {string} and password {string}", (email:
         expect(response.status).to.eq(200);
     });
 });
-
-
 
 When("the user does not visualize content registered with username {string} and phone number {string}", (username: string, phoneNumber: string) => {
     cy.get(`[data-cy="user-username-${username}"]`).should("not.exist");

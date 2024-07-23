@@ -104,4 +104,20 @@ Scenario: Username Update Unavailable
     And the user selects "Atualizar Informações"
     Then the user visualizes the text "Ocorreu um erro ao atualizar o usuário."
 
+Scenario: Successful User Deletion
+    Given the user visits the page "/user/delete_account/Carlos33"
+    And the user is logged in with email "jcso@gmail.com" and password "Clebson123"
+    When the user fills the data "password" with "Clebson123"
+    And the user selects "Excluir conta"
+    Then the user visualizes the text "Usuário excluído com sucesso"
+
+Scenario: User Deletion With Incorrect Password
+    Given the user visits the page "/user/delete_account/Carlos33"
+    And the user is logged in with email "jcso@gmail.com" and password "Clebson123"
+    When the user fills the data "password" with "SenhaErrada"
+    And the user selects "Excluir conta"
+    Then the user visualizes the text "Senha incorreta. A conta não foi deletada."
+
+
+
 
