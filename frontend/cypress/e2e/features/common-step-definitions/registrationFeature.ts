@@ -19,6 +19,10 @@ When("the user press {string}", (button: string) => {
     cy.get(`[data-cy="submit-button"]`).should('be.visible').should('not.be.disabled').click({ force: true });
 });
 
+When("the user leaves the data {string} empty", (field: string) => {
+    cy.get(`[data-cy="${field}"]`).clear();
+});
+
 
 Then("the user sees the text {string}", (text: string) => {
     cy.contains(text).should('be.visible');

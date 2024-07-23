@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createUser } from '../../../../services/userService';
 import styles from '../../pages/RegistrationPage/index.module.css';
 
@@ -37,8 +37,13 @@ const RegistrationForm = () => {
     setErrorMessage('');
     setIsSubmitting(true);
 
+    // Clear custom validation messages
+    const emailInput = e.target.elements.email;
+    emailInput.setCustomValidity('');
+
     if (!user.email) {
-      setErrorMessage("Email é um campo obrigatório.");
+      setErrorMessage("Preencha os campos obrigatórios.");
+      emailInput.setCustomValidity("Preencha os campos obrigatórios.");
       setIsSubmitting(false);
       return;
     }
@@ -59,6 +64,14 @@ const RegistrationForm = () => {
     }
   };
 
+  useEffect(() => {
+    // Add novalidate attribute to the form element when the component mounts
+    const formElement = document.querySelector('form');
+    if (formElement) {
+      formElement.setAttribute('novalidate', 'true');
+    }
+  }, []);
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.inputGroup}>
@@ -70,7 +83,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
-          data-cy="full_name" // Added data-cy attribute
+          data-cy="full_name"
         />
       </div>
       <div className={styles.inputGroup}>
@@ -82,7 +95,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
-          data-cy="username" // Added data-cy attribute
+          data-cy="username"
         />
       </div>
       <div className={styles.inputGroup}>
@@ -94,7 +107,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
-          data-cy="email" // Added data-cy attribute
+          data-cy="email"
         />
       </div>
       <div className={styles.inputGroup}>
@@ -106,7 +119,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
-          data-cy="password" // Added data-cy attribute
+          data-cy="password"
         />
       </div>
       <div className={styles.inputGroup}>
@@ -118,7 +131,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
-          data-cy="birth_date" // Added data-cy attribute
+          data-cy="birth_date"
         />
       </div>
       <div className={styles.inputGroup}>
@@ -129,7 +142,7 @@ const RegistrationForm = () => {
           value={user.phone_number}
           onChange={handleChange}
           className={styles.input}
-          data-cy="phone_number" // Added data-cy attribute
+          data-cy="phone_number"
         />
       </div>
       <div className={styles.inputGroup}>
@@ -140,7 +153,7 @@ const RegistrationForm = () => {
           value={user.address}
           onChange={handleChange}
           className={styles.input}
-          data-cy="address" // Added data-cy attribute
+          data-cy="address"
         />
       </div>
       <div className={styles.inputGroup}>
@@ -151,7 +164,7 @@ const RegistrationForm = () => {
           value={user.gender}
           onChange={handleChange}
           className={styles.input}
-          data-cy="gender" // Added data-cy attribute
+          data-cy="gender"
         />
       </div>
       <button type="submit" className={styles.button} data-cy="submit-button">
