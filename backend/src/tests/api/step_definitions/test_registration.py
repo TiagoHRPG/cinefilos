@@ -1,7 +1,7 @@
 from src.db.database import getDB, saveDB, clearDB
 from pytest_bdd import parsers, given, when, then, scenario
 from src.service.impl.user_mng_service import UserService
-from src.schemas.user import UserModelUpd
+from src.schemas.user import UserModel
 from fastapi import HTTPException
 from src.main import app
 from fastapi.testclient import TestClient
@@ -34,7 +34,7 @@ def given_user_not_registered(username):
 def given_phone_not_registered(phone_number):
     if phone_number == "33331111" or phone_number == 333444555 or phone_number == 22114411:
         return
-    assert not UserService.phone_exists(phone_number)
+    assert not UserService.phone_number_exists(phone_number)
 
 
 @when(parsers.parse('a POST request is sent to "/create_user" with the following user details:\n{table}'), 
@@ -53,7 +53,6 @@ def send_post_request_for_user(table, context):
 
     response = client.post("/user/create_user", json=user_details)
     context["response"] = response
-    print(response)
     return context
 
 @then(parsers.cfparse('the json status code is "{status_code}"'))

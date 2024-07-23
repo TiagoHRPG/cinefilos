@@ -28,7 +28,7 @@ async def remove_post(post_id: str, current_user: str):
     found = False
     for i in range(len(db["posts"])):
         if db["posts"][i]["id"] == post_id:
-            if current_user == db["posts"][i]["author"]["username"]:
+            if current_user == db["posts"][i]["author"]:
                 found = True
                 deleted_post = db["posts"].pop(i)
                 saveDB(db)
@@ -54,34 +54,33 @@ async def open_post(post_id: str):
     return post
 
 @router.put("/post/{post_id}", status_code=200, tags=["forum"], response_model=dict)
-async def update_like(post_id: str, user_id: str):
+async def update_like(post_id: str, username: str):
     db = getDB()
 
     found = False
-    for post_ in db["posts"]:
-        if post_["id"] == post_id:
-            found = True
-            post = post_
     
+    for post in db["posts"]:
+        if post["id"] == post_id:
+            found = True
+            already_liked = False
+
+            for i in range(len(post["users_who_liked"])):
+                if post["users_who_liked"][i] == username:
+                    already_liked = True
+                    username = post["users_who_liked"].pop(i)
+                    post["num_likes"] -= 1
+                    saveDB(db)
+                    return {"username": username, "status": 0}
+
+            if not already_liked:
+                post["users_who_liked"].append(username)
+                post["num_likes"] += 1
+                saveDB(db)
+                return {"username": username, "status": 1}
+            
     if not found:
         raise HTTPException(status_code=404, detail="Este post não existe ou foi excluído")
-
-    already_liked = False
     
-    for i in range(len(post["users_who_liked"])):
-        if post["users_who_liked"][i] == user_id:
-            already_liked = True
-            user = post["users_who_liked"].pop(i)
-            post["num_likes"] -= 1
-            saveDB(db)
-            return {"user_id": user_id, "status": 0}
-
-    if not already_liked:
-        post["users_who_liked"].append(user_id)
-        post["num_likes"] += 1
-        saveDB(db)
-        return {"user_id": user_id, "status": 1}
-
 @router.get("/post/{post_id}/likes", status_code=200, tags=["forum"], response_model=list[str])
 async def get_likes_list(post_id: str):
     db = getDB()
@@ -107,14 +106,14 @@ async def get_posts_from_topic(topic: str):
 @router.post("/post/{post_id}/comments", status_code = 200, tags = ["forum"], response_model=Comment)
 async def add_comment(post_id: str, comment: Comment):
     db = getDB()
-    coment_dict = comment.model_dump()
+    comment_dict = comment.model_dump()
 
-    if coment_dict["content"] == None:
-        raise HTTPException(status_code = 422, detail = "Não é possível comentar sem conteúdo")
+    if comment_dict["content"] == None:
+        raise HTTPException(status_code = 422, detail = "Não é possível adicionar um comentário vazio")
 
     for i in range(len(db["posts"])):
         if db["posts"][i]["id"] == post_id:
-            db["posts"][i]["comments"].append(coment_dict)
+            db["posts"][i]["comments"].append(comment_dict)
             db["posts"][i]["num_comments"] += 1
             saveDB(db)
             return comment

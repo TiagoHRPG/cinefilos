@@ -2,7 +2,7 @@ import pytest
 from src.db.database import getDB, clearDB
 from pytest_bdd import given, when, then, scenario
 from src.service.impl.user_mng_service import UserService
-from src.schemas.user import UserModelUpd
+from src.schemas.user import UserModel
 from src.schemas.response import HTTPResponses
 
 @scenario('../features/followers.feature', 'Friend/Follower Management')
@@ -18,7 +18,7 @@ def prepare_users():
     clearDB(db)
 
     # Create current user (einstein)
-    current_user_data = UserModelUpd(
+    current_user_data = UserModel(
         full_name="Albert Einstein",
         username="einstein",
         email="einstein@mail.com",
@@ -37,7 +37,7 @@ def prepare_users():
     UserService.add_user(current_user_data)
 
     # Create target user (bell28)
-    target_user_data = UserModelUpd(
+    target_user_data = UserModel(
         full_name="Ed Einstein",
         username="bell28",
         email="edttn@mail.com",
@@ -68,7 +68,6 @@ def send_follow_request(client, prepare_users):
     response = client.post(
         f'/user/follow/{target_user_id}/{current_user_id}'
     )
-    print(response)
     return response
 
 @then('the json status code is "200"')

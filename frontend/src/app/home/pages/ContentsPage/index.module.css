@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+
+.buttonCreateContentContainer {
+  display: flex;
+  justify-content: left;
+  margin-top: 20px;
+  margin-left: 10px
+}
+
+.linkCont {
+  margin-left: 2rem;
+}
