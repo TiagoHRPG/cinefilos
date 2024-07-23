@@ -2303,6 +2303,26 @@
       "quero_assistir": [],
       "abandonados": [],
       "id": "de508545-e879-49bb-8771-cd9c1f6bca77"
+    },
+    {
+      "full_name": "Albert Einstein",
+      "username": "Einstein",
+      "email": "einstein@mail.com",
+      "password": "Vxkhc986",
+      "birth_date": "1980-01-01",
+      "phone_number": "123456777",
+      "profile_picture": "https://i.pravatar.cc/250",
+      "address": "Rua dos belos, nº 0",
+      "gender": "masculine",
+      "pass_token": null,
+      "is_private": false,
+      "followers": [],
+      "following": [],
+      "follow_requests": [],
+      "assistidos": [],
+      "quero_assistir": [],
+      "abandonados": [],
+      "id": "83f8d18e-bed5-4350-a6b7-e3e827e09fba"
     }
   ],
   "posts": [],
@@ -2345,6 +2365,14 @@
       "rating": 8,
       "username": "edsonneto8",
       "content_id": "281338",
+      "content_type": "movies"
+    },
+    {
+      "title": "Melhor filme da história",
+      "report": "Sem palavras",
+      "rating": 10,
+      "username": "edsonneto8",
+      "content_id": "2809ee44-1149-42bb-ad9d-e1abce2eee2e",
       "content_type": "movies"
     }
   ]

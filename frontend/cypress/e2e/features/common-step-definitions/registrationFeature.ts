@@ -1,4 +1,16 @@
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When, Then, Before, After } from "@badeball/cypress-cucumber-preprocessor";
+
+Before(() => {
+  if (Cypress.currentTest.title.includes('@skip-backup')) {
+    Cypress.env('SKIP_DB_BACKUP', true);
+  }
+});
+
+After(() => {
+  if (Cypress.currentTest.title.includes('@skip-backup')) {
+    Cypress.env('SKIP_DB_BACKUP', false);
+  }
+});
 
 Given("the user joins the page {string}", (page: string) => {
     cy.visit(page);
@@ -22,7 +34,6 @@ When("the user press {string}", (button: string) => {
 When("the user leaves the data {string} empty", (field: string) => {
     cy.get(`[data-cy="${field}"]`).clear();
 });
-
 
 Then("the user sees the text {string}", (text: string) => {
     cy.contains(text).should('be.visible');

@@ -3,6 +3,7 @@ Feature: Registration and Maintenance of users
   I want to create, delete and edit my account
   So that I can manage my account
 
+@skip-backup
 Scenario: Successful User Registration
     Given the user joins the page "/register"
     And the user does not visualize content registered with username "Einstein" and phone number "123456777"
@@ -17,6 +18,7 @@ Scenario: Successful User Registration
     When the user press "Cadastrar"
     Then the user sees the text "Usuário adicionado com sucesso"
 
+@skip-backup
 Scenario: User Registration Without Email
     Given the user joins the page "/register"
     And the user does not visualize content registered with username "Einstein" and phone number "123456777"
@@ -30,6 +32,7 @@ Scenario: User Registration Without Email
     When the user press "Cadastrar"
     Then the user visualizes the text "Preencha os campos obrigatórios."
 
+@skip-backup
 Scenario: Email Unavailable
     Given the user visits the page "/register"
     And the user does not visualize content registered with username "Edttn" and phone number "333444555"
@@ -44,6 +47,7 @@ Scenario: Email Unavailable
     When the user press "Cadastrar"
     Then the user visualizes the text "Dados de cadastro já existem."
 
+@skip-backup
 Scenario: Username Unavailable
     Given the user visits the page "/register"
     And the user does not visualize content registered with username "Einstein" and phone number "22114411"
