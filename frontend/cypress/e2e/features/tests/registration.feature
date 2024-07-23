@@ -90,3 +90,18 @@ Scenario: Password Update Requirements Not Met
     And the user selects "Alterar Senha"
     Then the user sees the text "A senha deve ter pelo menos 8 caracteres, incluindo letras e números."
 
+Scenario: Successful User Update
+    Given the user visits the page "/user/edit_user_info/Carlos33"
+    And the user is logged in with email "jcso@gmail.com" and password "Clebson123"
+    When the user fills the data "address" with "Rua da alegria, nº 3"
+    And the user selects "Atualizar Informações"
+    Then the user sees the text "Usuário atualizado com sucesso"
+
+Scenario: Username Update Unavailable
+    Given the user visits the page "/user/edit_user_info/Carlos33"
+    And the user is logged in with email "jcso@gmail.com" and password "Clebson123"
+    When the user fills the data "username" with "clebson"
+    And the user selects "Atualizar Informações"
+    Then the user visualizes the text "Ocorreu um erro ao atualizar o usuário."
+
+
