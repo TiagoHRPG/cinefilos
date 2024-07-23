@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import { createUser } from '../../../../services/userService';
 import styles from '../../pages/RegistrationPage/index.module.css';
 
+// Definindo o tipo para o erro
+type CustomError = {
+  response?: {
+    status: number;
+  };
+};
+
 const RegistrationForm = () => {
   const [user, setUser] = useState({
     full_name: '',
@@ -13,6 +20,9 @@ const RegistrationForm = () => {
     address: '',
     gender: ''
   });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setUser({
@@ -23,10 +33,29 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccessMessage('');
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    if (!user.email) {
+      setErrorMessage("Email é um campo obrigatório.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       await createUser(user);
-    } catch (error) {
-      console.error(error);
+      setSuccessMessage("Usuário adicionado com sucesso");
+    } catch (error: unknown) {
+      // Verifica se o erro é um CustomError
+      const customError = error as CustomError;
+      if (customError.response && customError.response.status === 409) {
+        setErrorMessage("Dados de cadastro já existem.");
+      } else {
+        setErrorMessage("Ocorreu um erro ao cadastrar o usuário.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -41,6 +70,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
+          data-cy="full_name" // Added data-cy attribute
         />
       </div>
       <div className={styles.inputGroup}>
@@ -52,6 +82,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
+          data-cy="username" // Added data-cy attribute
         />
       </div>
       <div className={styles.inputGroup}>
@@ -63,6 +94,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
+          data-cy="email" // Added data-cy attribute
         />
       </div>
       <div className={styles.inputGroup}>
@@ -74,6 +106,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
+          data-cy="password" // Added data-cy attribute
         />
       </div>
       <div className={styles.inputGroup}>
@@ -85,6 +118,7 @@ const RegistrationForm = () => {
           onChange={handleChange}
           required
           className={styles.input}
+          data-cy="birth_date" // Added data-cy attribute
         />
       </div>
       <div className={styles.inputGroup}>
@@ -95,6 +129,7 @@ const RegistrationForm = () => {
           value={user.phone_number}
           onChange={handleChange}
           className={styles.input}
+          data-cy="phone_number" // Added data-cy attribute
         />
       </div>
       <div className={styles.inputGroup}>
@@ -105,6 +140,7 @@ const RegistrationForm = () => {
           value={user.address}
           onChange={handleChange}
           className={styles.input}
+          data-cy="address" // Added data-cy attribute
         />
       </div>
       <div className={styles.inputGroup}>
@@ -115,9 +151,14 @@ const RegistrationForm = () => {
           value={user.gender}
           onChange={handleChange}
           className={styles.input}
+          data-cy="gender" // Added data-cy attribute
         />
       </div>
-      <button type="submit" className={styles.button}>Cadastrar-se</button>
+      <button type="submit" className={styles.button} data-cy="submit-button">
+        Cadastrar
+      </button>
+      {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
+      {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
     </form>
   );
 };

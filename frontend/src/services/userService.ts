@@ -18,11 +18,11 @@ export const resetPassword = async (email, recoveryToken, newPassword) => {
   return response;
 };
 
-export const createUser = async (user: any) => {
-  console.log(user);
-  const response = await axios.post('http://localhost:8000/user/create_user', user);
+export const createUser = async (user) => {
+  const response = await axios.post('http://127.0.0.1:8000/user/create_user', user);
   return response.data;
 };
+
 
 export const getUser = async (userId: string) => {
   const response = await axios.get(`http://localhost:8000/user/get_user/${userId}`);
