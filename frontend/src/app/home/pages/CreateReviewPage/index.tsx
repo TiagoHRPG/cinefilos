@@ -1,17 +1,20 @@
 import styles from "./index.module.css";
 import {axios, AxiosError} from 'axios';
 import api from '/src/services/api';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, Button, Modal, Form } from 'react-bootstrap';
 import StarRating from '/src/app/home/components/StarRating/StarRating';
 import { platform } from "os";
 import { number } from "zod";
 import { Review } from "../../models/ReviewInterface";
+import { UserContext } from "../../context/UserContext";
 
 const AvaliacaoPage = () => {
+    const { user, saveUser } = useContext(UserContext);
+
     const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation();  
     const content = location.state.content;
     const content_id = content?.id;
     const { content_type } = useParams<{ content_type: string; }>();
@@ -24,7 +27,7 @@ const AvaliacaoPage = () => {
         console.log("e: ", e);
 
         const review: Review =  {title: titulo, report: avaliacao, rating: Number(nota), 
-                                username: "edsonneto8", content_id: content_id, content_type: content_type || ""};
+                                username: user?.username ?? "edsonneto8", content_id: content_id, content_type: content_type || ""};
         
         try {
             const response = await api.post('/reviews', review);

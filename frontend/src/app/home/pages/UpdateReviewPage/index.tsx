@@ -1,13 +1,14 @@
 import styles from "./index.module.css";
 import {axios, AxiosError} from 'axios';
 import api from '/src/services/api';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, Button, Modal, Form } from 'react-bootstrap';
 import StarRating from '/src/app/home/components/StarRating/StarRating';
 import { platform } from "os";
 import { number } from "zod";
 import { Review } from "../../models/ReviewInterface";
+import { UserContext } from "../../context/UserContext";
 
 
 interface Content {
@@ -29,6 +30,8 @@ interface Content {
   }
 
 const UpdateReviewPage = () => {
+    const { user, saveUser } = useContext(UserContext);
+
     const navigate = useNavigate();
     const { username, content_type, content_title } = useParams<{ username: string; content_type: string; content_title: string}>();
     const [content, setContent] = useState<Content[]>(() => { return [] as Content[]; });
@@ -66,7 +69,7 @@ const UpdateReviewPage = () => {
         console.log("e: ", e);
 
         const review: Review =  {title: title, report: report, rating: Number(rating), 
-                                username: "edsonneto8", content_id: content.id, content_type: content_type || ""};
+                                username: user?.username ?? "edsonneto8", content_id: content.id, content_type: content_type || ""};
         
         console.log("vou chamar a rota de post");
         try {
