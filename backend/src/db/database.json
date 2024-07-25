@@ -2466,26 +2466,6 @@
       "quero_assistir": [],
       "abandonados": [],
       "id": "68897f00-072c-43c4-ad0f-7ae867cbd058"
-    },
-    {
-      "full_name": "Usuário de teste",
-      "username": "dummyuser",
-      "email": "dummy@gmail.com",
-      "password": "dummy123",
-      "birth_date": "2003-11-12",
-      "phone_number": "5691945645",
-      "profile_picture": "https://i.pravatar.cc/250",
-      "address": "minha casa",
-      "gender": "não binário",
-      "pass_token": null,
-      "is_private": false,
-      "followers": [],
-      "following": [],
-      "follow_requests": [],
-      "assistidos": [],
-      "quero_assistir": [],
-      "abandonados": [],
-      "id": "442e1c98-41b8-420b-9213-bba2eea5d418"
     }
   ],
   "posts": [
@@ -2645,14 +2625,6 @@
       "rating": 10,
       "username": "gusta",
       "content_id": "2809ee44-1149-42bb-ad9d-e1abce2eee2e",
-      "content_type": "movies"
-    },
-    {
-      "title": "filme legal",
-      "report": "massa",
-      "rating": 10.0,
-      "username": "edsonneto8",
-      "content_id": "335988",
       "content_type": "movies"
     }
   ]
